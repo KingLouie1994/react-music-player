@@ -1,9 +1,6 @@
 // Imports from React
 import { useEffect } from "react";
 
-// Import functions
-import { playAudio } from "../util";
-
 // Import third party libraries
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -23,6 +20,7 @@ const Player = ({
   songInfo,
   songs,
   setSongs,
+  songEndHandler,
   timeUpdateHandler,
 }) => {
   // UseEffect
@@ -65,19 +63,27 @@ const Player = ({
     setSongInfo({ ...songInfo, currentTime: e.target.value });
   };
 
-  const skipTrackHandler = (direction) => {
+  const skipTrackHandler = async (direction) => {
     let currentIndex = songs.findIndex((song) => song.id === currentSong.id);
     if (direction === "skip-forward") {
-      setCurrentSong(songs[(currentIndex + 1) % songs.length]);
+      await setCurrentSong(songs[(currentIndex + 1) % songs.length]);
     }
     if (direction === "skip-back") {
       if ((currentIndex - 1) % songs.length === -1) {
-        setCurrentSong(songs[songs.length - 1]);
+        await setCurrentSong(songs[songs.length - 1]);
+        if (isPlaying) {
+          audioRef.current.play();
+        }
         return;
       }
-      setCurrentSong(songs[[(currentIndex - 1) % songs.length]]);
+      await setCurrentSong(songs[[(currentIndex - 1) % songs.length]]);
+      if (isPlaying) {
+        audioRef.current.play();
+      }
     }
-    playAudio(isPlaying, audioRef);
+    if (isPlaying) {
+      audioRef.current.play();
+    }
   };
 
   // Add styles
@@ -131,6 +137,7 @@ const Player = ({
         onLoadedMetadata={timeUpdateHandler}
         src={currentSong.audio}
         ref={audioRef}
+        onEnded={songEndHandler}
       />
     </div>
   );
