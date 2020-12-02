@@ -53,6 +53,7 @@ function App() {
         isPlaying={isPlaying}
         setCurrentSong={setCurrentSong}
         songs={songs}
+        setSongs={setSongs}
       />
     </div>
   );
