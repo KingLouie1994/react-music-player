@@ -1,8 +1,9 @@
-const LibrarySong = ({ song }) => {
+const LibrarySong = ({ song, songs, setCurrentSong, id, setIsPlaying }) => {
   // Event Handlers
   const songSelectHandler = () => {
-      
-  }
+    setCurrentSong(song);
+    setIsPlaying(false);
+  };
 
   return (
     <div onClick={songSelectHandler} className="library-song">
