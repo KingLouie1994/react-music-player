@@ -21,6 +21,7 @@ h4 {
 }
 
 // Import other scss style files
+@import "./nav";
 @import "./player";
 @import "./song";
 @import "./library";

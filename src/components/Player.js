@@ -1,6 +1,3 @@
-// Imports from React
-import { useState } from "react";
-
 // Import third party libraries
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -17,7 +14,7 @@ const Player = ({
   setIsPlaying,
   setSongInfo,
   songInfo,
-  timeUpdateHandler
+  timeUpdateHandler,
 }) => {
   // Event Handlers
   const playSongHandler = () => {
@@ -47,12 +44,12 @@ const Player = ({
         <p>{getTime(songInfo.currentTime)}</p>
         <input
           min={0}
-          max={songInfo.duration}
+          max={songInfo.duration || 0}
           value={songInfo.currentTime}
           onChange={dragHandler}
           type="range"
         />
-        <p>{getTime(songInfo.duration)}</p>
+        <p>{getTime(songInfo.duration || 0.0)}</p>
       </div>
       <div className="play-control">
         <FontAwesomeIcon className="skip-back" size="2x" icon={faAngleLeft} />
