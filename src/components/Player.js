@@ -1,6 +1,9 @@
 // Imports from React
 import { useEffect } from "react";
 
+// Import functions
+import { playAudio } from "../util";
+
 // Import third party libraries
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -74,6 +77,7 @@ const Player = ({
       }
       setCurrentSong(songs[[(currentIndex - 1) % songs.length]]);
     }
+    playAudio(isPlaying, audioRef);
   };
 
   return (
