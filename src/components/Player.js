@@ -1,3 +1,6 @@
+// Imports from React
+import { useEffect } from "react";
+
 // Import third party libraries
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -43,10 +46,14 @@ const Player = ({
   const skipTrackHandler = (direction) => {
     let currentIndex = songs.findIndex((song) => song.id === currentSong.id);
     if (direction === "skip-forward") {
-      setCurrentSong(songs[currentIndex + 1]);
+      setCurrentSong(songs[(currentIndex + 1) % songs.length]);
     }
     if (direction === "skip-back") {
-      setCurrentSong(songs[currentIndex - 1]);
+      if ((currentIndex - 1) % songs.length === -1) {
+        setCurrentSong(songs[songs.length - 1]);
+        return;
+      }
+      setCurrentSong(songs[[(currentIndex - 1) % songs.length]]);
     }
   };
 
