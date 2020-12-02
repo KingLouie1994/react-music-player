@@ -1,5 +1,5 @@
 // Imports from React
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 // Import third party libraries
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,16 +10,15 @@ import {
   faPause,
 } from "@fortawesome/free-solid-svg-icons";
 
-const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
-  // State
-  const [songInfo, setSongInfo] = useState({
-    currentTime: 0,
-    duration: 0,
-  });
-
-  // References
-  const audioRef = useRef(null);
-
+const Player = ({
+  audioRef,
+  currentSong,
+  isPlaying,
+  setIsPlaying,
+  setSongInfo,
+  songInfo,
+  timeUpdateHandler
+}) => {
   // Event Handlers
   const playSongHandler = () => {
     if (isPlaying) {
@@ -29,12 +28,6 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
       audioRef.current.play();
       setIsPlaying(!isPlaying);
     }
-  };
-
-  const timeUpdateHandler = (e) => {
-    const current = e.target.currentTime;
-    const duration = e.target.duration;
-    setSongInfo({ ...songInfo, currentTime: current, duration: duration });
   };
 
   const getTime = (time) => {
