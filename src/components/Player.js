@@ -1,3 +1,6 @@
+// Imports from React
+import { useEffect } from "react";
+
 // Import third party libraries
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,12 +13,34 @@ import {
 const Player = ({
   audioRef,
   currentSong,
+  setCurrentSong,
   isPlaying,
   setIsPlaying,
   setSongInfo,
   songInfo,
+  songs,
+  setSongs,
+  songEndHandler,
   timeUpdateHandler,
 }) => {
+  // UseEffect
+  useEffect(() => {
+    const newSongs = songs.map((song) => {
+      if (song.id === currentSong.id) {
+        return {
+          ...song,
+          active: true,
+        };
+      } else {
+        return {
+          ...song,
+          active: false,
+        };
+      }
+    });
+    setSongs(newSongs);
+  }, [currentSong]);
+
   // Event Handlers
   const playSongHandler = () => {
     if (isPlaying) {
@@ -38,21 +63,62 @@ const Player = ({
     setSongInfo({ ...songInfo, currentTime: e.target.value });
   };
 
+  const skipTrackHandler = async (direction) => {
+    let currentIndex = songs.findIndex((song) => song.id === currentSong.id);
+    if (direction === "skip-forward") {
+      await setCurrentSong(songs[(currentIndex + 1) % songs.length]);
+    }
+    if (direction === "skip-back") {
+      if ((currentIndex - 1) % songs.length === -1) {
+        await setCurrentSong(songs[songs.length - 1]);
+        if (isPlaying) {
+          audioRef.current.play();
+        }
+        return;
+      }
+      await setCurrentSong(songs[[(currentIndex - 1) % songs.length]]);
+      if (isPlaying) {
+        audioRef.current.play();
+      }
+    }
+    if (isPlaying) {
+      audioRef.current.play();
+    }
+  };
+
+  // Add styles
+  const trackAnim = {
+    transform: `translate(${songInfo.animationPercentage}%)`,
+  };
+
   return (
     <div className="player-container">
       <div className="time-control">
         <p>{getTime(songInfo.currentTime)}</p>
-        <input
-          min={0}
-          max={songInfo.duration || 0}
-          value={songInfo.currentTime}
-          onChange={dragHandler}
-          type="range"
-        />
+        <div
+          style={{
+            background: `linear-gradient(to right, ${currentSong.color[0]}, ${currentSong.color[1]})`,
+          }}
+          className="track"
+        >
+          <input
+            min={0}
+            max={songInfo.duration || 0}
+            value={songInfo.currentTime}
+            onChange={dragHandler}
+            type="range"
+          />
+          <div className="animate-track" style={trackAnim}></div>
+        </div>
         <p>{getTime(songInfo.duration || 0.0)}</p>
       </div>
       <div className="play-control">
-        <FontAwesomeIcon className="skip-back" size="2x" icon={faAngleLeft} />
+        <FontAwesomeIcon
+          onClick={() => skipTrackHandler("skip-back")}
+          className="skip-back"
+          size="2x"
+          icon={faAngleLeft}
+        />
         <FontAwesomeIcon
           onClick={playSongHandler}
           className="play"
@@ -60,6 +126,7 @@ const Player = ({
           icon={isPlaying ? faPause : faPlay}
         />
         <FontAwesomeIcon
+          onClick={() => skipTrackHandler("skip-forward")}
           className="skip-forward"
           size="2x"
           icon={faAngleRight}
@@ -70,6 +137,7 @@ const Player = ({
         onLoadedMetadata={timeUpdateHandler}
         src={currentSong.audio}
         ref={audioRef}
+        onEnded={songEndHandler}
       />
     </div>
   );

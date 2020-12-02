@@ -3,14 +3,13 @@ const LibrarySong = ({
   id,
   isPlaying,
   setCurrentSong,
-  setIsPlaying,
   song,
   songs,
   setSongs,
 }) => {
   // Event Handlers
-  const songSelectHandler = () => {
-    setCurrentSong(song);
+  const songSelectHandler = async () => {
+    await setCurrentSong(song);
     // Add Active State
     const newSongs = songs.map((song) => {
       if (song.id === id) {
@@ -28,12 +27,7 @@ const LibrarySong = ({
     setSongs(newSongs);
     // Check if the song is playing
     if (isPlaying) {
-      const playPromise = audioRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.then((audio) => {
-          audioRef.current.play();
-        });
-      }
+      audioRef.current.play();
     }
   };
 
