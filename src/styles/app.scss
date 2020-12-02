@@ -26,6 +26,12 @@ h4 {
   margin-left: 20rem;
 }
 
+@media screen and (max-width: 768px) {
+  .library-active {
+    margin-left: 0;
+  }
+}
+
 // Import other scss style files
 @import "./nav";
 @import "./player";
