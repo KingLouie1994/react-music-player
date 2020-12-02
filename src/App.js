@@ -45,10 +45,12 @@ function App() {
       <Player
         audioRef={audioRef}
         currentSong={currentSong}
+        setCurrentSong={setCurrentSong}
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
         setSongInfo={setSongInfo}
         songInfo={songInfo}
+        songs={songs}
         timeUpdateHandler={timeUpdateHandler}
       />
       <Library
