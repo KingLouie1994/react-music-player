@@ -19,8 +19,27 @@ const Player = ({
   setSongInfo,
   songInfo,
   songs,
+  setSongs,
   timeUpdateHandler,
 }) => {
+  // UseEffect
+  useEffect(() => {
+    const newSongs = songs.map((song) => {
+      if (song.id === currentSong.id) {
+        return {
+          ...song,
+          active: true,
+        };
+      } else {
+        return {
+          ...song,
+          active: false,
+        };
+      }
+    });
+    setSongs(newSongs);
+  }, [currentSong]);
+
   // Event Handlers
   const playSongHandler = () => {
     if (isPlaying) {
