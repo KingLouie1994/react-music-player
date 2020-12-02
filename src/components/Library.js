@@ -1,13 +1,19 @@
 // Import Components
 import LibrarySong from "./LibrarySong";
 
-const Library = ({ songs, currentSong }) => {
+const Library = ({ songs, setCurrentSong }) => {
   return (
-    <div className="library">
+    <div className="library-container">
       <h2>Library</h2>
       <div className="library-songs">
         {songs.map((song) => {
-          return <LibrarySong song={song} />;
+          return (
+            <LibrarySong
+              song={song}
+              setCurrentSong={setCurrentSong}
+              key={song.id}
+            />
+          );
         })}
       </div>
     </div>
