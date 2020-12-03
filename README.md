@@ -1,6 +1,4 @@
-# What is this project about
-
-This music player was created as part of a creative React course on the Internet. Only copyright-free music was used.
+# This is a music player created as part of a creative React course on the Internet. Only copyright-free music was used.
 
 # Getting Started with Create React App
 
